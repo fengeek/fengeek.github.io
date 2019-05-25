@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="all,follow">
 <meta name="googlebot" content="index,follow,snippet,archive">
-<title>Feng</title>
+<title>在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了） | Feng</title>
 <link rel="shortcut icon" href="https://blog.jyf.io/favicon.ico?v=1558809720978">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="https://blog.jyf.io/styles/main.css" type='text/css' media='all'>
@@ -17,7 +17,7 @@
 
 
 </head>
-<body class="post-template-default single single-post single-format-standard ct-body singular singular-post not-front standard">
+<body class="home blog ct-body standard">
 <div id="overflow-container" class="overflow-container">
   <a class="skip-content" href="#main">Skip to content</a>
   <header id="site-header" class="site-header" role="banner">
@@ -117,17 +117,135 @@
 
 
 </header>
+
   <div id="main" class="main" role="main">
-    <div class="main-content">
-      <div class="tags-container">
+    <div id="loop-container" class="loop-container">
+      <div class="post type-post status-publish format-standard has-post-thumbnail hentry category-design tag-design tag-standard-2 tag-tagalicious tag-travel entry full-without-featured odd excerpt-1">
         
-          <a class="tag" href="https://blog.jyf.io/tag/notes">笔记</a>
+          <div class='featured-image lazy lazy-bg-image' data-background="https://source.unsplash.com/random">
+          </div>
         
-          <a class="tag" href="https://blog.jyf.io/tag/Gridea">Gridea</a>
-        
+
+        <div class="entry-meta">
+          <span class="date">· 2019-05-26 ·</span> <span> / </span>
+          <span class="author">
+            <a href="https://blog.jyf.io" title="" rel="author"> Powered by Gridea</a>
+          </span>
+          
+        </div>
+        <div class='entry-header'>
+          <h1 class='entry-title'>在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了）</h1>
+        </div>
+        <div class="entry-container">
+          <div class="entry-content">
+            <article>
+              <p>本文前提条件：</p>
+<p>硬件：<br>
+主板：七彩虹z270i-wf<br>
+CPU：i7 8700t es(qn8j)<br>
+内存：影驰 DDR4 2400Mhz 8G2<br>
+散热：乔思伯HP400<br>
+风扇：三洋 12CM 9S1212P4F03<br>
+SSD：SM961 256G<br>
+电源：益衡 ENP-7025B 250W<br>
+机箱：GEN8机箱<br>
+杂项：<br>
+SATA线4<br>
+前置USB3.0延长线1<br>
+12CM风扇防尘网</p>
+<p>软件：<br>
+底层：ESXI6.7<br>
+虚拟：DSM DS918+ 6.2.2<br>
+Centos7<br>
+本文记录在ESXI中直通核显给群晖，使群晖中jellyfin的docker容器能够硬件解码，减少CPU压力。<br>
+首先，在ESXI管理页面找到PCI设备<br>
+主机-管理-硬件-PCI设备<br>
+<img src="https://blog.jyf.io/post-images/1558807381643.png" alt="">
+通过筛选找到支持直通的PCI设备 ，选中之后，点击切换直通。之后会提示需要重新引导ESXI才能生效。此时需要注意，如果直通设备中显卡只有核显，且只有一个GPu，会导致ESXI开机中卡屏，不过不影响使用，毕竟ESXI都是通过WEB页面管理。</p>
+<p>在重新引导ESXI启动之后，选中我们需要直通核显的虚拟机，进行编辑设置。</p>
+<p>在虚拟硬件界面选中添加其他设备，选择PCI设备。并在添加的PCI设备中选中我们本次的需要用到的核显。在完成以上步骤之后，可以将群晖虚拟机开启。</p>
+<p>开始群晖ssh，通过终端连入群晖。<br>
+ssh admin@${群晖ip}     密码为群晖密码<br>
+登陆之后通过 sudo -i切换到root用户，同样输入群晖密码。<br>
+通过docker命令启动jellyfin，主要是需要将/dev/dri/目录挂载给jellyfin的容器。<br>
+docker run -itd --name jellyfin  --device=/dev/dri:/dev/dri  jellyfin/jellyfin:latest<br>
+启动成功之后，可以在群晖中的docker组建中看到有一个名为jellyfin的容器。将该容器停止，进行编辑。<br>
+修改容器的挂载目录等，以下为我的配置<br>
+<img src="https://blog.jyf.io/post-images/1558809301356.png" alt=""><br>
+<img src="https://blog.jyf.io/post-images/1558809380354.png" alt=""><br>
+修改完配置之后，启动容器，进入容器查看/dev/dri/目录是否挂载成功。<br>
+确认挂载成功之后，登陆jellyfin，进入控制台中的转码页面，配置如下图<br>
+<img src="https://blog.jyf.io/post-images/1558809544370.png" alt=""><br>
+保存之后即可享受硬件解码，cpu再也不红。</p>
+
+            </article>
+          </div>
+          <div class='entry-meta-bottom'>
+            <div class="entry-categories">
+              <p>
+                <span>Categories</span>
+                
+                  
+                    
+                  <a href="https://blog.jyf.io/tag/notes" title="View all posts in 笔记">笔记</a>
+                    
+                    
+                    
+                  <a href="https://blog.jyf.io/tag/Gridea" title="View all posts in Gridea">Gridea</a>
+                    
+                    
+              </p>
+            </div>
+            <div class="entry-tags">
+              <p><span>Tags</span>
+              </p>
+            </div>
+          </div>
+          <div class="author-meta">
+            <div class="author">
+              <img alt='' src="https://blog.jyf.io/images/avatar.png?v=1558809720978" class='avatar avatar-72 photo' height='72' width='72'>
+              <span>WRITTEN BY: &nbsp;&nbsp;&nbsp;<a href='https://blog.jyf.io'>Feng</a> </span>
+            </div>
+            <div class="bio">
+              <p>没技术还爱瞎折腾</p>
+              
+                
+                  <a class="github" target="_blank"
+                     href="https://github.com/fengeek">
+                    <i class="fab fa-github" title="github"></i>
+                  </a>
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+                
+              
+            </div>
+          </div>
+        </div>
+          
+            <nav class="navigation pagination" role="navigation">
+              <h2 class="screen-reader-text">Posts navigation</h2>
+              <div class="nav-links">
+                <a class="next page-numbers" href="https://blog.jyf.io/post/sui-ji-tu-pian-api">下一篇->随机图片api</a>
+              </div>
+            </nav>
+          
       </div>
+      <section id="comments" class="comments">
+        
+      </section>
     </div>
   </div>
+
   <footer id="site-footer" class="site-footer" role="contentinfo">
     <h1>
         <a href="https://blog.jyf.io"> Feng </a>
@@ -176,5 +294,4 @@
 </div>
 </body>
 </html>
-
 

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <id>https://blog.jyf.io</id>
+    <title>Feng</title>
+    <updated>2019-05-25T18:42:06.254Z</updated>
+    <generator>https://github.com/jpmonette/feed</generator>
+    <link rel="alternate" href="https://blog.jyf.io"/>
+    <link rel="self" href="https://blog.jyf.io/atom.xml"/>
+    <subtitle>放弃不难，但坚持一定很酷。</subtitle>
+    <logo>https://blog.jyf.io/images/avatar.png</logo>
+    <icon>https://blog.jyf.io/favicon.ico</icon>
+    <rights>All rights reserved 2019, Feng</rights>
+    <entry>
+        <title type="html"><![CDATA[在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了）]]></title>
+        <id>https://blog.jyf.io/post/zai-esxi-xia-de-qun-hui-ds918zhong-wan-cheng-jellyfin-zhi-tong-he-xian-ying-jian-jie-ma-ying-ying-ying-cpu-zhong-yu-bu-hui-zai-hong-liao</id>
+        <link href="https://blog.jyf.io/post/zai-esxi-xia-de-qun-hui-ds918zhong-wan-cheng-jellyfin-zhi-tong-he-xian-ying-jian-jie-ma-ying-ying-ying-cpu-zhong-yu-bu-hui-zai-hong-liao">
+        </link>
+        <updated>2019-05-25T17:44:20.000Z</updated>
+        <content type="html"><![CDATA[<p>本文前提条件：</p>
+<p>硬件：<br>
+主板：七彩虹z270i-wf<br>
+CPU：i7 8700t es(qn8j)<br>
+内存：影驰 DDR4 2400Mhz 8G2<br>
+散热：乔思伯HP400<br>
+风扇：三洋 12CM 9S1212P4F03<br>
+SSD：SM961 256G<br>
+电源：益衡 ENP-7025B 250W<br>
+机箱：GEN8机箱<br>
+杂项：<br>
+SATA线4<br>
+前置USB3.0延长线1<br>
+12CM风扇防尘网</p>
+<p>软件：<br>
+底层：ESXI6.7<br>
+虚拟：DSM DS918+ 6.2.2<br>
+Centos7<br>
+本文记录在ESXI中直通核显给群晖，使群晖中jellyfin的docker容器能够硬件解码，减少CPU压力。<br>
+首先，在ESXI管理页面找到PCI设备<br>
+主机-管理-硬件-PCI设备<br>
+<img src="https://blog.jyf.io/post-images/1558807381643.png" alt="">
+通过筛选找到支持直通的PCI设备 ，选中之后，点击切换直通。之后会提示需要重新引导ESXI才能生效。此时需要注意，如果直通设备中显卡只有核显，且只有一个GPu，会导致ESXI开机中卡屏，不过不影响使用，毕竟ESXI都是通过WEB页面管理。</p>
+<p>在重新引导ESXI启动之后，选中我们需要直通核显的虚拟机，进行编辑设置。</p>
+<p>在虚拟硬件界面选中添加其他设备，选择PCI设备。并在添加的PCI设备中选中我们本次的需要用到的核显。在完成以上步骤之后，可以将群晖虚拟机开启。</p>
+<p>开始群晖ssh，通过终端连入群晖。<br>
+ssh admin@${群晖ip}     密码为群晖密码<br>
+登陆之后通过 sudo -i切换到root用户，同样输入群晖密码。<br>
+通过docker命令启动jellyfin，主要是需要将/dev/dri/目录挂载给jellyfin的容器。<br>
+docker run -itd --name jellyfin  --device=/dev/dri:/dev/dri  jellyfin/jellyfin:latest<br>
+启动成功之后，可以在群晖中的docker组建中看到有一个名为jellyfin的容器。将该容器停止，进行编辑。<br>
+修改容器的挂载目录等，以下为我的配置<br>
+<img src="https://blog.jyf.io/post-images/1558809301356.png" alt=""><br>
+<img src="https://blog.jyf.io/post-images/1558809380354.png" alt=""><br>
+修改完配置之后，启动容器，进入容器查看/dev/dri/目录是否挂载成功。<br>
+确认挂载成功之后，登陆jellyfin，进入控制台中的转码页面，配置如下图<br>
+<img src="https://blog.jyf.io/post-images/1558809544370.png" alt=""><br>
+保存之后即可享受硬件解码，cpu再也不红。</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[随机图片api]]></title>
+        <id>https://blog.jyf.io/post/sui-ji-tu-pian-api</id>
+        <link href="https://blog.jyf.io/post/sui-ji-tu-pian-api">
+        </link>
+        <updated>2019-05-07T06:18:27.000Z</updated>
+        <content type="html"><![CDATA[<p>源网址：<a href="https://source.unsplash.com/">unsplash</a></p>
+<p>https://source.unsplash.com/random
+https://source.unsplash.com/daily
+https://source.unsplash.com/weekly
+https://source.unsplash.com/1600x900/?nature,water</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[折腾黑裙]]></title>
+        <id>https://blog.jyf.io/post/zhe-teng-hei-qun</id>
+        <link href="https://blog.jyf.io/post/zhe-teng-hei-qun">
+        </link>
+        <updated>2019-05-07T05:57:39.000Z</updated>
+        <summary type="html"><![CDATA[<pre><code>	当我看到蜗牛星际的时候，这辆车其实已经开远了，所以并没有很实惠的上到低价车。几经挑选之后，在某鱼上购入一台蜗牛D单。说实话，到货之后查看外观真的没啥磨损，很值得。没拆解，估计内里和网上测评一样，都是低价料，但是这个价位还要什么自行车。</code></pre>
+]]></summary>
+        <content type="html"><![CDATA[<pre><code>	当我看到蜗牛星际的时候，这辆车其实已经开远了，所以并没有很实惠的上到低价车。几经挑选之后，在某鱼上购入一台蜗牛D单。说实话，到货之后查看外观真的没啥磨损，很值得。没拆解，估计内里和网上测评一样，都是低价料，但是这个价位还要什么自行车。
+</code></pre>
+<!-- more -->
+<p>未完待续</p>
+]]></content>
+    </entry>
+    <entry>
+        <title type="html"><![CDATA[关于]]></title>
+        <id>https://blog.jyf.io/post/about</id>
+        <link href="https://blog.jyf.io/post/about">
+        </link>
+        <updated>2019-01-25T11:09:48.000Z</updated>
+        <summary type="html"><![CDATA[<p>对不起 这里啥都没有！</p>
+]]></summary>
+        <content type="html"><![CDATA[<p>对不起 这里啥都没有！</p>
+<!-- more -->
+]]></content>
+    </entry>
+</feed>
