@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="robots" content="all,follow">
 <meta name="googlebot" content="index,follow,snippet,archive">
-<title>折腾黑裙 | Feng</title>
+<title>ESXI硬盘RDM直通给群晖使用 | Feng</title>
 <link rel="shortcut icon" href="https://blog.jyf.io/favicon.ico?v=1558878786408">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 <link rel="stylesheet" href="https://blog.jyf.io/styles/main.css" type='text/css' media='all'>
@@ -122,32 +122,52 @@
     <div id="loop-container" class="loop-container">
       <div class="post type-post status-publish format-standard has-post-thumbnail hentry category-design tag-design tag-standard-2 tag-tagalicious tag-travel entry full-without-featured odd excerpt-1">
         
-          <div class='featured-image lazy lazy-bg-image' data-background="https://source.unsplash.com/daily">
-          </div>
-        
 
         <div class="entry-meta">
-          <span class="date">· 2019-05-07 ·</span> <span> / </span>
+          <span class="date">· 2019-05-26 ·</span> <span> / </span>
           <span class="author">
             <a href="https://blog.jyf.io" title="" rel="author"> Powered by Gridea</a>
           </span>
           
-            <span class="category">
-                    <span> / </span>
-                    <a href="https://blog.jyf.io/tag/notes">笔记</a>
-                </span>
-          
         </div>
         <div class='entry-header'>
-          <h1 class='entry-title'>折腾黑裙</h1>
+          <h1 class='entry-title'>ESXI硬盘RDM直通给群晖使用</h1>
         </div>
         <div class="entry-container">
           <div class="entry-content">
             <article>
-              <pre><code>	当我看到蜗牛星际的时候，这辆车其实已经开远了，所以并没有很实惠的上到低价车。几经挑选之后，在某鱼上购入一台蜗牛D单。说实话，到货之后查看外观真的没啥磨损，很值得。没拆解，估计内里和网上测评一样，都是低价料，但是这个价位还要什么自行车。
+              <p><strong>前提</strong></p>
+<p>ESXi支持硬件直通（需要CPU和主板都支持VT-d），可以将PCI的硬件直接配置给虚拟机来使用。但也仅限于PCI设备，其他直接接在主板的磁盘、USB设备、CPU内置显卡等都是不能被直通的。如果希望将某个磁盘也直通给虚拟机，有两种办法：</p>
+<ul>
+<li>添置一块PCI的阵列卡，将其直通给虚拟机，所有需要直通的磁盘都接在这个阵列卡上面；</li>
+<li>创建RDM虚拟磁盘；</li>
+</ul>
+<p><strong>创建RDM虚拟磁盘</strong></p>
+<p>通过SSH登录ESXi，获取磁盘设备标识符：</p>
+<pre><code class="language-bsh">ls -l /dev/disks
 </code></pre>
-<!-- more -->
-<p>未完待续</p>
+<p>敲完命令后出来类似如下：</p>
+<pre><code class="language-bash">naa.200049454505080fnaa.200049454505080f:1
+naa.200049454505080f:5naa.200049454505080f:6
+naa.200049454505080f:7naa.200049454505080f:8
+naa.200049454505080f:9t10.ATA_____HGST_HTS541010A9E680__________________________JD1050CCG3XJZK
+t10.ATA_____LITEONIT_LMT2D256M3M_____________________TW0V6PN8550852CJ1446
+t10.ATA_____LITEONIT_LMT2D256M3M_____________________TW0V6PN8550852CJ1446:4
+vml.01000000002020202020204a443130353043434733584a5a4b484753542048
+vml.01000000005457305636504e38353530383532434a313434364c4954454f4e
+vml.01000000005457305636504e38353530383532434a313434364c4954454f4e:4
+vml.0200000000200049454505080f4d6173732053vml.0200000000200049454505080f4d6173732053:1
+vml.0200000000200049454505080f4d6173732053:5vml.0200000000200049454505080f4d6173732053:6
+vml.0200000000200049454505080f4d6173732053:7vml.0200000000200049454505080f4d6173732053:8
+vml.0200000000200049454505080f4d6173732053:9
+</code></pre>
+<p>其中冒号后的数字为硬盘分区。复制不带数字的标识符，如：t10.ATA_____HGST_HTS541010A9E680__________________________JD1050CCG3XJZK</p>
+<p>执行以下命令：</p>
+<pre><code class="language-bash">vmkfstools -z /vmfs/devices/disks/&lt;直通硬盘的标识符&gt; /vmfs/volumes/&lt;保存vmdk的硬盘标识符&gt;/&lt;VMDK名字&gt;.vmdk
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-bash">vmkfstools -z /vmfs/devices/disks/t10.ATA_____HGST_HTS541010A9E680__________________________JD1050CCG3XJZK /vmfs/volumes/5851c14c-7f3006b5-33e4-000ec4ce7958/DSMdisk.vmdk
+</code></pre>
 
             </article>
           </div>
@@ -206,7 +226,7 @@
             <nav class="navigation pagination" role="navigation">
               <h2 class="screen-reader-text">Posts navigation</h2>
               <div class="nav-links">
-                <a class="next page-numbers" href="https://blog.jyf.io/post/about">下一篇->关于</a>
+                <a class="next page-numbers" href="https://blog.jyf.io/post/zai-esxi-xia-de-qun-hui-ds918zhong-wan-cheng-jellyfin-zhi-tong-he-xian-ying-jian-jie-ma-ying-ying-ying-cpu-zhong-yu-bu-hui-zai-hong-liao">下一篇->在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了）</a>
               </div>
             </nav>
           

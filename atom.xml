@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.jyf.io</id>
     <title>Feng</title>
-    <updated>2019-05-25T18:42:06.254Z</updated>
+    <updated>2019-05-26T13:53:13.311Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.jyf.io"/>
     <link rel="self" href="https://blog.jyf.io/atom.xml"/>
@@ -10,6 +10,46 @@
     <logo>https://blog.jyf.io/images/avatar.png</logo>
     <icon>https://blog.jyf.io/favicon.ico</icon>
     <rights>All rights reserved 2019, Feng</rights>
+    <entry>
+        <title type="html"><![CDATA[ESXI硬盘RDM直通给群晖使用]]></title>
+        <id>https://blog.jyf.io/post/esxi-ying-pan-rdm-zhi-tong-gei-qun-hui-shi-yong</id>
+        <link href="https://blog.jyf.io/post/esxi-ying-pan-rdm-zhi-tong-gei-qun-hui-shi-yong">
+        </link>
+        <updated>2019-05-26T08:43:12.000Z</updated>
+        <content type="html"><![CDATA[<p><strong>前提</strong></p>
+<p>ESXi支持硬件直通（需要CPU和主板都支持VT-d），可以将PCI的硬件直接配置给虚拟机来使用。但也仅限于PCI设备，其他直接接在主板的磁盘、USB设备、CPU内置显卡等都是不能被直通的。如果希望将某个磁盘也直通给虚拟机，有两种办法：</p>
+<ul>
+<li>添置一块PCI的阵列卡，将其直通给虚拟机，所有需要直通的磁盘都接在这个阵列卡上面；</li>
+<li>创建RDM虚拟磁盘；</li>
+</ul>
+<p><strong>创建RDM虚拟磁盘</strong></p>
+<p>通过SSH登录ESXi，获取磁盘设备标识符：</p>
+<pre><code class="language-bsh">ls -l /dev/disks
+</code></pre>
+<p>敲完命令后出来类似如下：</p>
+<pre><code class="language-bash">naa.200049454505080fnaa.200049454505080f:1
+naa.200049454505080f:5naa.200049454505080f:6
+naa.200049454505080f:7naa.200049454505080f:8
+naa.200049454505080f:9t10.ATA_____HGST_HTS541010A9E680__________________________JD1050CCG3XJZK
+t10.ATA_____LITEONIT_LMT2D256M3M_____________________TW0V6PN8550852CJ1446
+t10.ATA_____LITEONIT_LMT2D256M3M_____________________TW0V6PN8550852CJ1446:4
+vml.01000000002020202020204a443130353043434733584a5a4b484753542048
+vml.01000000005457305636504e38353530383532434a313434364c4954454f4e
+vml.01000000005457305636504e38353530383532434a313434364c4954454f4e:4
+vml.0200000000200049454505080f4d6173732053vml.0200000000200049454505080f4d6173732053:1
+vml.0200000000200049454505080f4d6173732053:5vml.0200000000200049454505080f4d6173732053:6
+vml.0200000000200049454505080f4d6173732053:7vml.0200000000200049454505080f4d6173732053:8
+vml.0200000000200049454505080f4d6173732053:9
+</code></pre>
+<p>其中冒号后的数字为硬盘分区。复制不带数字的标识符，如：t10.ATA_____HGST_HTS541010A9E680__________________________JD1050CCG3XJZK</p>
+<p>执行以下命令：</p>
+<pre><code class="language-bash">vmkfstools -z /vmfs/devices/disks/&lt;直通硬盘的标识符&gt; /vmfs/volumes/&lt;保存vmdk的硬盘标识符&gt;/&lt;VMDK名字&gt;.vmdk
+</code></pre>
+<p>例如：</p>
+<pre><code class="language-bash">vmkfstools -z /vmfs/devices/disks/t10.ATA_____HGST_HTS541010A9E680__________________________JD1050CCG3XJZK /vmfs/volumes/5851c14c-7f3006b5-33e4-000ec4ce7958/DSMdisk.vmdk
+</code></pre>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了）]]></title>
         <id>https://blog.jyf.io/post/zai-esxi-xia-de-qun-hui-ds918zhong-wan-cheng-jellyfin-zhi-tong-he-xian-ying-jian-jie-ma-ying-ying-ying-cpu-zhong-yu-bu-hui-zai-hong-liao</id>
@@ -31,29 +71,33 @@ SATA线4<br>
 前置USB3.0延长线1<br>
 12CM风扇防尘网</p>
 <p>软件：<br>
-底层：ESXI6.7<br>
-虚拟：DSM DS918+ 6.2.2<br>
-Centos7<br>
-本文记录在ESXI中直通核显给群晖，使群晖中jellyfin的docker容器能够硬件解码，减少CPU压力。<br>
-首先，在ESXI管理页面找到PCI设备<br>
-主机-管理-硬件-PCI设备<br>
-<img src="https://blog.jyf.io/post-images/1558807381643.png" alt="">
-通过筛选找到支持直通的PCI设备 ，选中之后，点击切换直通。之后会提示需要重新引导ESXI才能生效。此时需要注意，如果直通设备中显卡只有核显，且只有一个GPu，会导致ESXI开机中卡屏，不过不影响使用，毕竟ESXI都是通过WEB页面管理。</p>
+底层：</p>
+<p>​	ESXI6.7<br>
+虚拟：</p>
+<p>​	DSM DS918+ 6.2.2<br>
+​	Centos7</p>
+<p>本文记录在ESXI中直通核显给群晖，使群晖中jellyfin的docker容器能够硬件解码，减少CPU压力。</p>
+<p>首先，在ESXI管理页面找到PCI设备。</p>
+<p>主机-管理-硬件-PCI设备</p>
+<p><img src="https://blog.jyf.io/post-images/1558807381643.png" alt=""></p>
+<p>通过筛选找到支持直通的PCI设备 ，选中之后，点击切换直通。之后会提示需要重新引导ESXI才能生效。</p>
+<p>此时需要注意，如果直通设备中显卡只有核显，且只有一个GPu，会导致ESXI开机中卡屏，不过不影响使用，毕竟ESXI都是通过WEB页面管理。</p>
 <p>在重新引导ESXI启动之后，选中我们需要直通核显的虚拟机，进行编辑设置。</p>
 <p>在虚拟硬件界面选中添加其他设备，选择PCI设备。并在添加的PCI设备中选中我们本次的需要用到的核显。在完成以上步骤之后，可以将群晖虚拟机开启。</p>
-<p>开始群晖ssh，通过终端连入群晖。<br>
-ssh admin@${群晖ip}     密码为群晖密码<br>
-登陆之后通过 sudo -i切换到root用户，同样输入群晖密码。<br>
-通过docker命令启动jellyfin，主要是需要将/dev/dri/目录挂载给jellyfin的容器。<br>
-docker run -itd --name jellyfin  --device=/dev/dri:/dev/dri  jellyfin/jellyfin:latest<br>
-启动成功之后，可以在群晖中的docker组建中看到有一个名为jellyfin的容器。将该容器停止，进行编辑。<br>
-修改容器的挂载目录等，以下为我的配置<br>
-<img src="https://blog.jyf.io/post-images/1558809301356.png" alt=""><br>
-<img src="https://blog.jyf.io/post-images/1558809380354.png" alt=""><br>
-修改完配置之后，启动容器，进入容器查看/dev/dri/目录是否挂载成功。<br>
-确认挂载成功之后，登陆jellyfin，进入控制台中的转码页面，配置如下图<br>
-<img src="https://blog.jyf.io/post-images/1558809544370.png" alt=""><br>
-保存之后即可享受硬件解码，cpu再也不红。</p>
+<p>开始群晖ssh，通过终端连入群晖。</p>
+<p>ssh admin@${群晖ip}     密码为群晖密码。</p>
+<p>登陆之后通过 sudo -i切换到root用户，同样输入群晖密码。</p>
+<p>通过docker命令启动jellyfin，主要是需要将/dev/dri/目录挂载给jellyfin的容器。</p>
+<pre><code class="language-bash">docker run -itd --name jellyfin  --device=/dev/dri:/dev/dri  jellyfin/jellyfin:latest
+</code></pre>
+<p>启动成功之后，可以在群晖中的docker组建中看到有一个名为jellyfin的容器。将该容器停止，进行编辑。
+修改容器的挂载目录等，以下为我的配置。</p>
+<p><img src="https://blog.jyf.io/post-images/1558809301356.png" alt=""></p>
+<p><img src="https://blog.jyf.io/post-images/1558809380354.png" alt=""></p>
+<p>修改完配置之后，启动容器，进入容器查看/dev/dri/目录是否挂载成功。</p>
+<p>确认挂载成功之后，登陆jellyfin，进入控制台中的转码页面，配置如下图。</p>
+<p><img src="https://blog.jyf.io/post-images/1558809544370.png" alt=""></p>
+<p>保存之后即可享受硬件解码，cpu再也不红。</p>
 ]]></content>
     </entry>
     <entry>
