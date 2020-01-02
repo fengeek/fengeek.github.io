@@ -182,7 +182,10 @@
     <ul class="markdownIt-TOC">
 <li>
 <ul>
-<li><a href="#%E7%89%B9%E6%80%A7">特性👇</a></li>
+<li><a href="#%E5%87%86%E5%A4%87%E5%9C%A8%E5%85%88">准备在先</a></li>
+<li><a href="#%E5%BC%80%E5%A7%8B%E6%8A%98%E8%85%BE">开始折腾</a></li>
+<li><a href="#%E6%B7%BB%E5%8A%A0mtk%E6%97%A0%E7%BA%BF%E9%A9%B1%E5%8A%A8">添加MTK无线驱动</a></li>
+<li><a href="#%E5%AF%B9%E5%9B%BA%E4%BB%B6%E5%8A%9F%E8%83%BD%E8%BF%9B%E8%A1%8C%E9%85%8D%E7%BD%AE">对固件功能进行配置</a></li>
 </ul>
 </li>
 </ul>
@@ -423,63 +426,97 @@ window.addEventListener('load', function() {
               <div class="article-box">
     <header class="post-header">
   <h1 class="post-title">
-    <a class="post-title-link" href="https://blog.jyf.io/post/hello-hve-notes">
-      Hello Hve Notes
+    <a class="post-title-link" href="https://blog.jyf.io/post/openwrtlede-bian-yi-xiao-ji-fei-xun-k2p">
+      OpenWrt/LEDE编译小记（斐讯K2P）
     </a>
   </h1>
   <div class="post-meta">
     <span class="meta-item pc-show">
       <i class="fa fa-calendar-o"></i>
       <span>发布于</span>
-      <span>2018-12-12</span>
+      <span>2019-07-14</span>
     </span>
-    
-      <span class="meta-item">
-        <span class="post-meta-divider pc-show">|</span>
-        <i class="fa fa-folder-o"></i>
-        <span class="pc-show">分类于</span>
-        
-          
-            <a href="https://blog.jyf.io/tag/Gridea">
-              <span>Gridea</span>
-            </a>
-          
-        
-      </span>
     
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-clock-o"></i>
-      <span>1分钟</span>
+      <span>5分钟</span>
     </span>
     <span class="meta-item">
       <span class="post-meta-divider">|</span>
       <i class="fa fa-file-word-o"></i>
-      <span>276<span class="pc-show">字数</span></span>
+      <span>1023<span class="pc-show">字数</span></span>
     </span>
   </div>
 </header>
 </div>
               <div class="post-body next-md-body" id="post_body">
-                <p>👏  欢迎使用 <strong>Hve Notes</strong> ！</p>
-<p>Github: <a href="https://github.com/hve-notes/hve-notes">Hve Notes</a><br>
-项目主页: <a href="http://hvenotes.fehey.com/">Hve Notes</a><br>
-示例网站: <a href="http://fehey.com/">示例网站一</a> <a href="http://hve-notes.github.io">示例网站二</a></p>
-<p>✍️  <strong>Hve Notes</strong> 一个静态博客写作客户端。你可以用它来记录你的生活、心情、知识、笔记、创意... ...</p>
-<h2 id="特性">特性👇</h2>
-<p>📝  你可以使用最酷的 <strong>Markdown</strong> 语法，进行快速创作</p>
-<p>🌉  你可以给文章配上精美的封面图和在文章任意位置插入图片</p>
-<p>🏷️  你可以对文章进行标签分组</p>
-<p>📋  你可以自定义菜单，甚至可以创建外部链接菜单</p>
-<p>💻  你可以在 <strong>𝖶𝗂𝗇𝖽𝗈𝗐𝗌</strong> 或 <strong>𝖬𝖺𝖼𝖮𝖲</strong> 设备上使用此客户端</p>
-<p>🌎  你可以使用 <strong>𝖦𝗂𝗍𝗁𝗎𝖻 𝖯𝖺𝗀𝖾𝗌</strong> 或 <strong>Coding Pages</strong> 向世界展示，未来将支持更多平台</p>
-<p>💬  你可以进行简单的配置，接入 <a href="https://github.com/gitalk/gitalk">Gitalk</a> 或 <a href="https://github.com/SukkaW/DisqusJS">DisqusJS</a> 评论系统</p>
-<p>🇬🇧  你可以使用<strong>中文简体</strong>或<strong>英语</strong></p>
-<p>🌁  你可以任意使用应用内默认主题或任意第三方主题</p>
-<p>🌱 当然 <strong>Hve Notes</strong> 还很年轻，有很多不足，但请相信，它会不停向前🏃</p>
-<p>未来，它一定会成为你离不开的伙伴</p>
-<p>尽情发挥你的才华吧！</p>
-<p>😘 Enjoy~</p>
+                <h2 id="准备在先">准备在先</h2>
+<hr>
+<p>确保网络连接正常，最好全程能连接外网（你们懂我意思吧），不然编译到一半失败就不好玩了。（笑）</p>
+<p>笔者编译时使用的是Deepin 15.10.1 x64，其他发行版应该也没问题，Lean在他的github上推荐的是Ubuntu。当然也可以用docker镜像编译，这里不再赘述，各位读者善用搜索;)</p>
+<p>2019/6/25 Update:经测试，Windows 10 x64 1903环境下，使用WSL/Ubuntu（Windows Subsystem for Linux）也可进行正常编译。自己编译的时候发现没有ipv6支持，加上了Extra Packages--&gt;ipv6helper，取消勾选odhcpd，问题解决。</p>
+<p>2019/7/7 Update: 因lean已重新加回luci-app-ssrplus支持，暂时删除相关内容。</p>
+<p>安装编译所需的依赖包：</p>
+<pre><code>sudo apt -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint
+</code></pre>
+<h2 id="开始折腾">开始折腾</h2>
+<hr>
+<p>将源码下载下来，必要时可使用proxychains等工具：</p>
+<pre><code class="language-shell">git clone https://github.com/coolsnowwolf/lede/
+cd lede
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https:////upload-images.jianshu.io/upload_images/2828045-37d95a0ea0dc6ccc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/717/format/webp" alt="img" loading="lazy"></figure>
+<p>源码准备完成</p>
+<p>接下来执行这条指令更新feeds并安装：</p>
+<pre><code>./scripts/feeds update -a &amp;&amp; ./scripts/feeds install -a
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https:////upload-images.jianshu.io/upload_images/2828045-0872151b101fc42c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>feeds更新</p>
+<h2 id="添加mtk无线驱动">添加MTK无线驱动</h2>
+<hr>
+<p>由于OpenWrt官方至今未添加mt7615的驱动（F**k MTK），因此我们目前只能使用github上泄露的驱动，这里我使用的是5.0.2.0版本的：</p>
+<pre><code class="language-shell">git clone https://github.com/MeIsReallyBa/k2p-openwrt-mt7615_5.0.2.0
+mv k2p-openwrt-mt7615_5.0.2.0/mtk package/mtk
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https:////upload-images.jianshu.io/upload_images/2828045-8d8fa7710f2a88ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>安装MT7615驱动</p>
+<h2 id="对固件功能进行配置">对固件功能进行配置</h2>
+<hr>
+<p>执行如下指令开始配置：</p>
+<pre><code class="language-shell">make menuconfig
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https:////upload-images.jianshu.io/upload_images/2828045-30c0376f80f0ff99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>手动配置</p>
+<p>这里视自己情况需要而选择吧。</p>
+<pre><code>Target System 选择MediaTek Ralink MIPS，Subtarget选择MT7621 based boards，Target Profile选择Phicomm K2P。
+</code></pre>
+<p>接下来参考<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwww.right.com.cn%2Fforum%2Fthread-572784-1-1.html">这里</a>对MTK驱动进行配置，大概步骤如下：</p>
+<pre><code>主菜单选择MTK Properties--&gt;driver--&gt;按Y选中kmod-mt_wifi--&gt;回车进入--&gt;Choose First WiFi Interface--&gt;选择MT7615E；
+按Y勾选MT WIFI Driver--&gt;WiFi Operation Modes--&gt;按Y勾选AP--&gt;Exit--&gt;Exit--&gt;选中wifi-l1-profile进入--&gt;确保1st card勾选，其他取消勾选--&gt;Exit--&gt;Exit
+回到MTK Properties，选择Misc进入--&gt;勾选mtk-luci-plugin，luci-app-mtk-wifi必选，webconsole可选--&gt;Exit*2回到menuconfig主目录
+</code></pre>
+<p>至此MTK驱动配置完成。</p>
+<p>笔者根据自己需要，取消了<code>LuCI-Applications</code>中的<code>luci-app-adblock</code>, <code>luci-app-pptp-server</code>, <code>luci-app-usb-printer</code>, <code>luci-app-vlmcsd</code>, <code>luci-app-vsftpd</code>, <code>luci-app-xlnetacc</code>, <code>luci-app-zerotier</code>，勾选了<code>luci-app-familycloud</code>和<code>luci-app-ssr-plus</code>。</p>
+<p>主题/theme中我选中了<code>argon</code>主题。</p>
+<p>接着回到主菜单，<code>Utilities</code>中取消勾选了<code>coremark</code>。</p>
+<p>其余保持默认不变。</p>
+<p>然后选择Exit，直接OK保存配置，不用改名，默认的<code>.config</code>就可以。</p>
+<p>接下来执行</p>
+<pre><code>make download
+</code></pre>
+<p>会下载所需的文件，此时建议全程代理/魔法上网，因为中途会连接到很多国外的镜像源。此处笔者使用了proxychains。即使这样还是花了一点时间。</p>
+<figure data-type="image" tabindex="5"><img src="https:////upload-images.jianshu.io/upload_images/2828045-d385345725dca5d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>下载编译时所需文件</p>
+<p>下载完成之后就可以开始正式编译了。</p>
+<pre><code>make -jX V=s
+</code></pre>
+<p>其中X建议为你的CPU线程数。一般都会建议先-j1避免编译报错，不过笔者直接使用八线程编译了几次也没出什么大问题，看情况咯。</p>
+<figure data-type="image" tabindex="6"><img src="https:////upload-images.jianshu.io/upload_images/2828045-8011737cf69d28fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>编译完成</p>
+<p>至此，编译完成，可以在<code>lede/bin/targets/ramips/mt7621</code>下找到编译生成的文件，我们需要的是<code>openwrt-ramips-mt7621-k2p-initramfs-kernel.bin</code>和<code>openwrt-ramips-mt7621-k2p-squashfs-sysupgrade.bin</code>这两个文件。首先在breed下刷入kernel镜像，闪存布局选择“斐讯0xA0000”，然后重启登录LuCI之后再通过系统-备份/升级，不保留配置刷入sysupgrade镜像，等待重启，<s>笔者当时刷写的时候选的公版也没翻车（大雾示范）。</s>（其实如果只有一个镜像的话直接breed刷sysupgrade镜像就可以了）</p>
+<p>如果是第二次编译，可以先<code>git pull</code>更新源码之后再进行编译。</p>
+<p>至此，刷机完成。这是你独享的moment！享受自己亲手编译的固件吧！</p>
 
               </div>
               <div class="post-footer">
@@ -490,7 +527,7 @@ window.addEventListener('load', function() {
     </li>
     <li class="post-copyright-link">
       <strong>本文链接：</strong>
-      <a href="https://blog.jyf.io/post/hello-hve-notes" title="Hello Hve Notes">Hello Hve Notes</a>
+      <a href="https://blog.jyf.io/post/openwrtlede-bian-yi-xiao-ji-fei-xun-k2p" title="OpenWrt/LEDE编译小记（斐讯K2P）">OpenWrt/LEDE编译小记（斐讯K2P）</a>
     </li>
     <li class="post-copyright-license">
       <strong>版权声明： </strong>
@@ -499,14 +536,16 @@ window.addEventListener('load', function() {
   </ul>
   <div class="tags">
     
-      <a href="https://blog.jyf.io/tag/Gridea"># Gridea</a>
-    
   </div>
   <div class="nav">
     <div class="nav-prev">
       
     </div>
     <div class="nav-next">
+      
+        <a class="nav-pc-next" href="https://blog.jyf.io/post/fa-xian-ge-jie-ya-de-xiao-wan-ju">发现个解压的小玩具</a>
+        <a class="nav-mobile-next" href="https://blog.jyf.io/post/fa-xian-ge-jie-ya-de-xiao-wan-ju">下一篇</a>
+        <i class="fa fa-chevron-right"></i>
       
     </div>
   </div>

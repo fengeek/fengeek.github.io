@@ -1,242 +1,350 @@
 <html>
-<head>
-    <meta charset="utf-8" />
-<meta name="description" content="" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="robots" content="all,follow">
-<meta name="googlebot" content="index,follow,snippet,archive">
+  <head>
+      <meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
 <title>Feng</title>
-<link rel="shortcut icon" href="https://blog.jyf.io/favicon.ico?v=1559404977426">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-<link rel="stylesheet" href="https://blog.jyf.io/styles/main.css" type='text/css' media='all'>
+<link rel="shortcut icon" href="https://blog.jyf.io/favicon.ico?v=1577935362208">
+<link rel="stylesheet" href="https://blog.jyf.io/styles/main.css">
+<meta name="description" content="放弃不难，但坚持一定很酷。" />
+
+<link rel="stylesheet" href="/media/fonts/font-awesome.css">
+<link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Roboto Slab:300,300italic,400,400italic,700,700italic|Rosario:300,300italic,400,400italic,700,700italic|PT Mono:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
 
 <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
-<script src="https://cdn.bootcss.com/moment.js/2.23.0/moment.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/velocity-animate@1.5.0/velocity.ui.min.js"></script>
 
-
-
-
-</head>
-    <body class="post-template-default single single-post single-format-standard ct-body singular singular-post not-front standard">
-        <div id="overflow-container" class="overflow-container">
-            <a class="skip-content" href="#main">Skip to content</a>
-                <header id="site-header" class="site-header" role="banner">
-    <div class='top-navigation top-navigation-important'>
-        <div class='container'>
-            <div id="menu-secondary" class="menu-container menu-secondary" role="navigation">
-                <button id="toggle-secondary-navigation" class="toggle-secondary-navigation"><i class="fa fa-plus"></i></button>
-                <div class="menu">
-                    <ul id="menu-secondary-items" class="menu-secondary-items">
-                        
-                        
-                            
-                        <li id="menu-item" class="menu-item menu-item-type-taxonomy menu-item-object-category menu-item">
-                            <a href="https://blog.jyf.io/tag/Gridea">Gridea</a>
-                        </li>
-                            
-                        
-                    </ul>
-                </div>
-            </div>
-            <ul class="social-media-icons">
-                
-                    
-                        <li>
-                            <a href="https://github.com/fengeek" data-animate-hover="pulse" class="github" target="_blank">
-                                <i class="fab fa-github" title="github"></i>
-                                <span class="screen-reader-text">github</span>
-                            </a>
-                        </li>
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-                    
-                
-            </ul>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous"
+    onload="renderMathInElement(document.body);"></script>
+  </head>
+  <body>
+    <div class="head-top-line"></div>
+    <div class="header-box">
+      
+<header class="header">
+  <div class="blog-header" id="header">
+    <div class="site-meta">
+      <div class="nav-toggle" id="nav_toggle">
+        <div class="toggle-box">
+          <div class="line line-top"></div>
+          <div class="line line-center"></div>
+          <div class="line line-bottom"></div>
         </div>
+      </div>
+      <div class="site-title">
+        <a href="/" class="brand">
+          <span>Feng</span>
+        </a>
+      </div>
+      <p class="subtitle">Quick notes</p>
     </div>
-
-    <div class="container">
-        <div id="title-info" class="title-info">
-            <div id='site-title' class='site-title'>
-                <a href="https://blog.jyf.io">  Feng </a>
-            </div>
-        </div>
-        <button id="toggle-navigation" class="toggle-navigation">
-            <i class="fa fa-bars"></i>
-        </button>
-        <div id="menu-primary-tracks" class="menu-primary-tracks"></div>
-        <div id="menu-primary" class="menu-container menu-primary" role="navigation">
-            <p class="site-description">放弃不难，但坚持一定很酷。</p>
-            <div class="menu">
-                <ul id="menu-primary-items" class="menu-primary-items">
-                     
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/">首页</a>
-                            </li>
-                        
-                    
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/archives">归档</a>
-                            </li>
-                        
-                    
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/tags">标签</a>
-                            </li>
-                        
-                    
-                        
-                            <li id="menu-item" class='menu-item menu-item-type-post_type menu-item-object-page current-menu-item current_page_item'>
-                                <a href="/post/about">关于</a>
-                            </li>
-                        
-                    
-                </ul>
-            </div>
-        </div>
-    </div>
-
-
+    <nav class="site-nav" id="site_nav">
+      <ul id="nav_ul">
+        
+          <li class="nav-item ">
+            
+              <a href="/">
+                <i class="fa fa-home"></i> 首页
+              </a>
+            
+          </li>
+        
+          <li class="nav-item nav-item-active">
+            
+              <a href="/archives">
+                <i class="fa fa-archive"></i> 归档
+              </a>
+            
+          </li>
+        
+          <li class="nav-item ">
+            
+              <a href="/tags">
+                <i class="fa fa-tags"></i> 标签
+              </a>
+            
+          </li>
+        
+          <li class="nav-item ">
+            
+              <a href="/post/about">
+                <i class="fa fa-info-circle"></i> 关于
+              </a>
+            
+          </li>
+        
+        <li class="nav-item">
+          <a>
+            <i class="fa fa-search"></i> 搜索
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
 </header>
+<script type="text/javascript"> 
+ 
+  let showNav = true;
 
-                
+  let navToggle = document.querySelector('#nav_toggle'),
+  siteNav = document.querySelector('#site_nav');
+  
+  function navClick() {
+    let sideBar = document.querySelector('.sidebar');
+    let navUl = document.querySelector('#nav_ul');
+    navToggle.classList.toggle('nav-toggle-active');
+    siteNav.classList.toggle('nav-menu-active');
+    if (siteNav.classList.contains('nav-menu-active')) {
+      siteNav.style = "height: " + (navUl.children.length * 42) +"px !important";
+    } else {
+      siteNav.style = "";
+    }
+  }
 
-<div class="main">
-    <div class="main-content">
-        <div id="timeline-container">
-            <div id="timeline">
-                
-                <div class="timeline-item">
-                    <div class="timeline-icon">
-    <!--                    <img src="assets/images/star.svg" alt="2019">-->
-                        <span>2019</span>
-                    </div>
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> 发现个解压的小玩具</h3>
-                            <p>
-                                <p><a href="https://blog.jyf.io/mikutap/">https://blog.jyf.io/mikutap/</a></p>
-
-                            </p>
-                            <a href="https://blog.jyf.io/post/fa-xian-ge-jie-ya-de-xiao-wan-ju" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> ESXI硬盘RDM直通给群晖使用</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://blog.jyf.io/post/esxi-ying-pan-rdm-zhi-tong-gei-qun-hui-shi-yong" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> 在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了）</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://blog.jyf.io/post/zai-esxi-xia-de-qun-hui-ds918zhong-wan-cheng-jellyfin-zhi-tong-he-xian-ying-jian-jie-ma-ying-ying-ying-cpu-zhong-yu-bu-hui-zai-hong-liao" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> 随机图片api</h3>
-                            <p>
-                                
-                            </p>
-                            <a href="https://blog.jyf.io/post/sui-ji-tu-pian-api" class="btn">review</a>
-                        </div>
-                    
-                    
-                    
-                        <div class="timeline-content">
-                            <h3 class="timeline-title"> 关于</h3>
-                            <p>
-                                <p>对不起 这里啥都没有！</p>
-
-                            </p>
-                            <a href="https://blog.jyf.io/post/about" class="btn">review</a>
-                        </div>
-                    
-                    
-                </div>
-                 
-            </div>
-        </div>
+  navToggle.addEventListener('click',navClick);  
+</script>
     </div>
+    <div class="main-continer">
+      <div class="section-layout">
+        <div class="section-layout-wrapper">
+          <div class="sidebar">
+    <div class="sidebar-wrapper">
+  <div class="sidebar-item">
+    <img class="site-author-image" src="https://blog.jyf.io/images/avatar.png"/>
+    <p class="site-author-name">Feng</p>
+    <p class="site-description">放弃不难，但坚持一定很酷。</p>
+  </div>
+  <div class="sidebar-item side-item-stat">
+    <div class="sidebar-item-box">
+      <a href="/archives/">
+        
+        <span class="site-item-stat-count">6</span>
+        <span class="site-item-stat-name">文章</span>
+      </a>
+    </div>
+    <div class="sidebar-item-box">
+      <a href="">
+        <span class="site-item-stat-count">1</span>
+        <span class="site-item-stat-name">分类</span>
+      </a>
+    </div>
+    <div class="sidebar-item-box">
+      <a href="/tags/">
+        <span class="site-item-stat-count">1</span>
+        <span class="site-item-stat-name">标签</span>
+      </a>
+    </div>
+  </div>
+  <div class="sidebar-item">
+    <span class="site-item-rss">
+        <i class="fa fa-rss"></i>
+        <a href="https://blog.jyf.io/atom.xml" target="_blank">RSS</a>
+    </span>
+  </div>
+  <div class="sidebar-item sidebar-item-social">
+    <div class="social-item">
+      <a href="">
+        <i class="fa fa-github"></i> GitHub
+      </a>
+      <a href="">
+        <i class="fa fa-twitter"></i> Twitter
+      </a>
+    </div>
+    <div class="social-item">
+      <a href="">
+        <i class="fa fa-globe"></i> 豆瓣
+      </a>
+      <a href="">
+        <i class="fa fa-globe"></i> 知乎
+      </a>
+    </div>
+  </div>
+</div>
+</div>
+          <div class="section-box">
+            <section class="section posts-expand">
+              
+<div class="archive-timeline-box">
+  <div class="archive-timeline-title">
+    
+      <h2>非常好！目前共计8篇日志，继续努力！</h2>
+    
+  </div>
+  
+    
+    
+      <div class="node-title">
+        <h2 class="tag-year">2019</h2>
+      </div>    
+      
+    
+    <a href="https://blog.jyf.io/post/openwrtlede-bian-yi-xiao-ji-fei-xun-k2p">
+      <div class="motion-warpper tag-archive-node">
+        <div class="tag-node">
+          <h1>
+            07-14
+            <small>OpenWrt/LEDE编译小记（斐讯K2P）</small>
+          </h1>
+        </div>  
+    </div>
+    </a>
+  
+    
+    
+    <a href="https://blog.jyf.io/post/fa-xian-ge-jie-ya-de-xiao-wan-ju">
+      <div class="motion-warpper tag-archive-node">
+        <div class="tag-node">
+          <h1>
+            06-02
+            <small>发现个解压的小玩具</small>
+          </h1>
+        </div>  
+    </div>
+    </a>
+  
+    
+    
+    <a href="https://blog.jyf.io/post/esxi-ying-pan-rdm-zhi-tong-gei-qun-hui-shi-yong">
+      <div class="motion-warpper tag-archive-node">
+        <div class="tag-node">
+          <h1>
+            05-26
+            <small>ESXI硬盘RDM直通给群晖使用</small>
+          </h1>
+        </div>  
+    </div>
+    </a>
+  
+    
+    
+    <a href="https://blog.jyf.io/post/zai-esxi-xia-de-qun-hui-ds918zhong-wan-cheng-jellyfin-zhi-tong-he-xian-ying-jian-jie-ma-ying-ying-ying-cpu-zhong-yu-bu-hui-zai-hong-liao">
+      <div class="motion-warpper tag-archive-node">
+        <div class="tag-node">
+          <h1>
+            05-26
+            <small>在ESXI下的群晖DS918+中完成jellyfin直通核显硬件解码（嘤嘤嘤 CPU终于不会再红了）</small>
+          </h1>
+        </div>  
+    </div>
+    </a>
+  
+    
+    
+    <a href="https://blog.jyf.io/post/sui-ji-tu-pian-api">
+      <div class="motion-warpper tag-archive-node">
+        <div class="tag-node">
+          <h1>
+            05-07
+            <small>随机图片api</small>
+          </h1>
+        </div>  
+    </div>
+    </a>
+  
+    
+    
+    <a href="https://blog.jyf.io/post/about">
+      <div class="motion-warpper tag-archive-node">
+        <div class="tag-node">
+          <h1>
+            01-25
+            <small>关于</small>
+          </h1>
+        </div>  
+    </div>
+    </a>
+  
 </div>
 
-                <nav class="navigation pagination" role="navigation">
-    <h2 class="screen-reader-text">Posts navigation</h2>
-    <div class="nav-links">
-        
-        
-    </div>
-</nav>
 
-                <footer id="site-footer" class="site-footer" role="contentinfo">
-    <h1>
-        <a href="https://blog.jyf.io"> Feng </a>
-    </h1>
-    <p class="site-description">放弃不难，但坚持一定很酷。</p>
-    <div id="menu-footer" class="menu-container menu-footer" role="navigation">
-        <div class="menu">
-            <ul id="menu-footer-items" class="menu-footer-items">
-            </ul>
+<div class="page">
+  <ul class="pagination-ul">
+    
+    
+      
+        <li class="pagination-li pagination-active">
+            <a href="/archives/page/../">
+              1
+            </a>
+        </li>
+      
+    
+    
+  </ul>
+</div>
+
+            </section>
+          </div>
         </div>
+      </div>
+      <div class="footer-box">
+  <footer class="footer">
+    <div class="copyright">
+      © 2019-2020 <i class="fa fa-heart"></i> HsxyHao
     </div>
-    <ul class="social-media-icons">
-        
-            
-                <li>
-                    <a href="https://github.com/fengeek" data-animate-hover="pulse" class="github" target="_blank">
-                        <i class="fab fa-github" title="github"></i>
-                        <span class="screen-reader-text">github</span>
-                    </a>
-                </li>
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-            
-        
-    </ul>
-    <div class="design-credit">
-        <p>Powered by Gridea</p>
+    <div class="poweredby">
+      <div class="power-left">Power By<a href="https://github.com/hsxyhao"> HsxyHao</a></div>
+      <div>Copy<a href="https://github.com/iissnan/hexo-theme-next"> Hexo Next Theme</a></div>
     </div>
-</footer>
+  </footer>
+  <div class="back-to-top" id="back_to_top">
+    <i class="fa fa-arrow-up"></i>
+    <span class="scrollpercent">
+      <span id="back_to_top_text">100</span>%
+    </span>
+  </div>
+</div>
+
 <script>
-    hljs.initHighlightingOnLoad()
+
+  let body = document.body;
+
+  let back2Top = document.querySelector('#back_to_top'),
+  back2TopText = document.querySelector('#back_to_top_text');
+
+  function scrollAnimation(currentY, targetY) {
+   
+    let needScrollTop = targetY - currentY
+    let _currentY = currentY
+    setTimeout(() => {
+      const dist = Math.ceil(needScrollTop / 10)
+      _currentY += dist
+      window.scrollTo(_currentY, currentY)
+      if (needScrollTop > 10 || needScrollTop < -10) {
+        scrollAnimation(_currentY, targetY)
+      } else {
+        window.scrollTo(_currentY, targetY)
+      }
+    }, 1)
+  }
+
+  back2Top.addEventListener("click", function(e) {
+    scrollAnimation(body.scrollTop, 0);
+    e.stopPropagation();
+    return false;
+  });
+  
+  window.addEventListener('scroll', function(e) {
+    let percent = body.scrollTop / (body.scrollHeight - body.clientHeight) * 100;
+    if (percent > 1 && !back2Top.classList.contains('back-top-active')) {
+      back2Top.classList.add('back-top-active');
+    }
+    if (percent == 0) {
+      back2Top.classList.remove('back-top-active');
+    }
+    back2TopText.textContent = Math.floor(percent);
+  });
+
+  // 动态调整站点概览高度
+  let sideBar = document.querySelector('.sidebar');
+  let navUl = document.querySelector('#nav_ul');
+  sideBar.style = 'margin-top:' + (navUl.children.length * 42 + 162) + 'px; opacity: 1;';
+  // 代码高亮
+  hljs.initHighlightingOnLoad();
 </script>
-<script src="https://blog.jyf.io/media/scripts/lib/jquery.min.js"></script>
-<script src="https://blog.jyf.io/media/scripts/lib/jquerymigrate.js"></script>
-<script src="https://blog.jyf.io/media/scripts/lib/production.min.js"></script>
-        </div>
-    </body>
+    </div>
+  </body>
+  <script src="/media/js/motion.js"></script>
 </html>

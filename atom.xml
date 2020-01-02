@@ -2,14 +2,88 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://blog.jyf.io</id>
     <title>Feng</title>
-    <updated>2019-06-01T16:04:55.437Z</updated>
+    <updated>2020-01-02T03:22:46.516Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://blog.jyf.io"/>
     <link rel="self" href="https://blog.jyf.io/atom.xml"/>
     <subtitle>放弃不难，但坚持一定很酷。</subtitle>
     <logo>https://blog.jyf.io/images/avatar.png</logo>
     <icon>https://blog.jyf.io/favicon.ico</icon>
-    <rights>All rights reserved 2019, Feng</rights>
+    <rights>All rights reserved 2020, Feng</rights>
+    <entry>
+        <title type="html"><![CDATA[OpenWrt/LEDE编译小记（斐讯K2P）]]></title>
+        <id>https://blog.jyf.io/post/openwrtlede-bian-yi-xiao-ji-fei-xun-k2p</id>
+        <link href="https://blog.jyf.io/post/openwrtlede-bian-yi-xiao-ji-fei-xun-k2p">
+        </link>
+        <updated>2019-07-13T17:35:26.000Z</updated>
+        <content type="html"><![CDATA[<h2 id="准备在先">准备在先</h2>
+<hr>
+<p>确保网络连接正常，最好全程能连接外网（你们懂我意思吧），不然编译到一半失败就不好玩了。（笑）</p>
+<p>笔者编译时使用的是Deepin 15.10.1 x64，其他发行版应该也没问题，Lean在他的github上推荐的是Ubuntu。当然也可以用docker镜像编译，这里不再赘述，各位读者善用搜索;)</p>
+<p>2019/6/25 Update:经测试，Windows 10 x64 1903环境下，使用WSL/Ubuntu（Windows Subsystem for Linux）也可进行正常编译。自己编译的时候发现没有ipv6支持，加上了Extra Packages--&gt;ipv6helper，取消勾选odhcpd，问题解决。</p>
+<p>2019/7/7 Update: 因lean已重新加回luci-app-ssrplus支持，暂时删除相关内容。</p>
+<p>安装编译所需的依赖包：</p>
+<pre><code>sudo apt -y install build-essential asciidoc binutils bzip2 gawk gettext git libncurses5-dev libz-dev patch unzip zlib1g-dev lib32gcc1 libc6-dev-i386 subversion flex uglifyjs git-core gcc-multilib p7zip p7zip-full msmtp libssl-dev texinfo libglib2.0-dev xmlto qemu-utils upx libelf-dev autoconf automake libtool autopoint
+</code></pre>
+<h2 id="开始折腾">开始折腾</h2>
+<hr>
+<p>将源码下载下来，必要时可使用proxychains等工具：</p>
+<pre><code class="language-shell">git clone https://github.com/coolsnowwolf/lede/
+cd lede
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https:////upload-images.jianshu.io/upload_images/2828045-37d95a0ea0dc6ccc.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/717/format/webp" alt="img" loading="lazy"></figure>
+<p>源码准备完成</p>
+<p>接下来执行这条指令更新feeds并安装：</p>
+<pre><code>./scripts/feeds update -a &amp;&amp; ./scripts/feeds install -a
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https:////upload-images.jianshu.io/upload_images/2828045-0872151b101fc42c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>feeds更新</p>
+<h2 id="添加mtk无线驱动">添加MTK无线驱动</h2>
+<hr>
+<p>由于OpenWrt官方至今未添加mt7615的驱动（F**k MTK），因此我们目前只能使用github上泄露的驱动，这里我使用的是5.0.2.0版本的：</p>
+<pre><code class="language-shell">git clone https://github.com/MeIsReallyBa/k2p-openwrt-mt7615_5.0.2.0
+mv k2p-openwrt-mt7615_5.0.2.0/mtk package/mtk
+</code></pre>
+<figure data-type="image" tabindex="3"><img src="https:////upload-images.jianshu.io/upload_images/2828045-8d8fa7710f2a88ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>安装MT7615驱动</p>
+<h2 id="对固件功能进行配置">对固件功能进行配置</h2>
+<hr>
+<p>执行如下指令开始配置：</p>
+<pre><code class="language-shell">make menuconfig
+</code></pre>
+<figure data-type="image" tabindex="4"><img src="https:////upload-images.jianshu.io/upload_images/2828045-30c0376f80f0ff99.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>手动配置</p>
+<p>这里视自己情况需要而选择吧。</p>
+<pre><code>Target System 选择MediaTek Ralink MIPS，Subtarget选择MT7621 based boards，Target Profile选择Phicomm K2P。
+</code></pre>
+<p>接下来参考<a href="https://links.jianshu.com/go?to=https%3A%2F%2Fwww.right.com.cn%2Fforum%2Fthread-572784-1-1.html">这里</a>对MTK驱动进行配置，大概步骤如下：</p>
+<pre><code>主菜单选择MTK Properties--&gt;driver--&gt;按Y选中kmod-mt_wifi--&gt;回车进入--&gt;Choose First WiFi Interface--&gt;选择MT7615E；
+按Y勾选MT WIFI Driver--&gt;WiFi Operation Modes--&gt;按Y勾选AP--&gt;Exit--&gt;Exit--&gt;选中wifi-l1-profile进入--&gt;确保1st card勾选，其他取消勾选--&gt;Exit--&gt;Exit
+回到MTK Properties，选择Misc进入--&gt;勾选mtk-luci-plugin，luci-app-mtk-wifi必选，webconsole可选--&gt;Exit*2回到menuconfig主目录
+</code></pre>
+<p>至此MTK驱动配置完成。</p>
+<p>笔者根据自己需要，取消了<code>LuCI-Applications</code>中的<code>luci-app-adblock</code>, <code>luci-app-pptp-server</code>, <code>luci-app-usb-printer</code>, <code>luci-app-vlmcsd</code>, <code>luci-app-vsftpd</code>, <code>luci-app-xlnetacc</code>, <code>luci-app-zerotier</code>，勾选了<code>luci-app-familycloud</code>和<code>luci-app-ssr-plus</code>。</p>
+<p>主题/theme中我选中了<code>argon</code>主题。</p>
+<p>接着回到主菜单，<code>Utilities</code>中取消勾选了<code>coremark</code>。</p>
+<p>其余保持默认不变。</p>
+<p>然后选择Exit，直接OK保存配置，不用改名，默认的<code>.config</code>就可以。</p>
+<p>接下来执行</p>
+<pre><code>make download
+</code></pre>
+<p>会下载所需的文件，此时建议全程代理/魔法上网，因为中途会连接到很多国外的镜像源。此处笔者使用了proxychains。即使这样还是花了一点时间。</p>
+<figure data-type="image" tabindex="5"><img src="https:////upload-images.jianshu.io/upload_images/2828045-d385345725dca5d6.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>下载编译时所需文件</p>
+<p>下载完成之后就可以开始正式编译了。</p>
+<pre><code>make -jX V=s
+</code></pre>
+<p>其中X建议为你的CPU线程数。一般都会建议先-j1避免编译报错，不过笔者直接使用八线程编译了几次也没出什么大问题，看情况咯。</p>
+<figure data-type="image" tabindex="6"><img src="https:////upload-images.jianshu.io/upload_images/2828045-8011737cf69d28fd.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1000/format/webp" alt="img" loading="lazy"></figure>
+<p>编译完成</p>
+<p>至此，编译完成，可以在<code>lede/bin/targets/ramips/mt7621</code>下找到编译生成的文件，我们需要的是<code>openwrt-ramips-mt7621-k2p-initramfs-kernel.bin</code>和<code>openwrt-ramips-mt7621-k2p-squashfs-sysupgrade.bin</code>这两个文件。首先在breed下刷入kernel镜像，闪存布局选择“斐讯0xA0000”，然后重启登录LuCI之后再通过系统-备份/升级，不保留配置刷入sysupgrade镜像，等待重启，<s>笔者当时刷写的时候选的公版也没翻车（大雾示范）。</s>（其实如果只有一个镜像的话直接breed刷sysupgrade镜像就可以了）</p>
+<p>如果是第二次编译，可以先<code>git pull</code>更新源码之后再进行编译。</p>
+<p>至此，刷机完成。这是你独享的moment！享受自己亲手编译的固件吧！</p>
+]]></content>
+    </entry>
     <entry>
         <title type="html"><![CDATA[发现个解压的小玩具]]></title>
         <id>https://blog.jyf.io/post/fa-xian-ge-jie-ya-de-xiao-wan-ju</id>
@@ -94,7 +168,7 @@ SATA线4<br>
 <p>本文记录在ESXI中直通核显给群晖，使群晖中jellyfin的docker容器能够硬件解码，减少CPU压力。</p>
 <p>首先，在ESXI管理页面找到PCI设备。</p>
 <p>主机-管理-硬件-PCI设备</p>
-<p><img src="https://blog.jyf.io/post-images/1558807381643.png" alt=""></p>
+<figure data-type="image" tabindex="1"><img src="https://blog.jyf.io/post-images/1558807381643.png" alt="" loading="lazy"></figure>
 <p>通过筛选找到支持直通的PCI设备 ，选中之后，点击切换直通。之后会提示需要重新引导ESXI才能生效。</p>
 <p>此时需要注意，如果直通设备中显卡只有核显，且只有一个GPu，会导致ESXI开机中卡屏，不过不影响使用，毕竟ESXI都是通过WEB页面管理。</p>
 <p>在重新引导ESXI启动之后，选中我们需要直通核显的虚拟机，进行编辑设置。</p>
@@ -105,13 +179,13 @@ SATA线4<br>
 <p>通过docker命令启动jellyfin，主要是需要将/dev/dri/目录挂载给jellyfin的容器。</p>
 <pre><code class="language-bash">docker run -itd --name jellyfin  --device=/dev/dri:/dev/dri  jellyfin/jellyfin:latest
 </code></pre>
-<p>启动成功之后，可以在群晖中的docker组建中看到有一个名为jellyfin的容器。将该容器停止，进行编辑。
+<p>启动成功之后，可以在群晖中的docker组建中看到有一个名为jellyfin的容器。将该容器停止，进行编辑。<br>
 修改容器的挂载目录等，以下为我的配置。</p>
-<p><img src="https://blog.jyf.io/post-images/1558809301356.png" alt=""></p>
-<p><img src="https://blog.jyf.io/post-images/1558809380354.png" alt=""></p>
+<figure data-type="image" tabindex="2"><img src="https://blog.jyf.io/post-images/1558809301356.png" alt="" loading="lazy"></figure>
+<figure data-type="image" tabindex="3"><img src="https://blog.jyf.io/post-images/1558809380354.png" alt="" loading="lazy"></figure>
 <p>修改完配置之后，启动容器，进入容器查看/dev/dri/目录是否挂载成功。</p>
 <p>确认挂载成功之后，登陆jellyfin，进入控制台中的转码页面，配置如下图。</p>
-<p><img src="https://blog.jyf.io/post-images/1558809544370.png" alt=""></p>
+<figure data-type="image" tabindex="4"><img src="https://blog.jyf.io/post-images/1558809544370.png" alt="" loading="lazy"></figure>
 <p>保存之后即可享受硬件解码，cpu再也不红。</p>
 ]]></content>
     </entry>
